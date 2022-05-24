@@ -1,0 +1,11 @@
+Model Information:
+* title:	Speaker
+* source:	https://sketchfab.com/3d-models/speaker-02173070841943df89ec2015050f6c44
+* author:	Александр (https://sketchfab.com/Alex.Kon)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Speaker" (https://sketchfab.com/3d-models/speaker-02173070841943df89ec2015050f6c44) by Александр (https://sketchfab.com/Alex.Kon) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
