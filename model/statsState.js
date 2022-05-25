@@ -70,7 +70,6 @@ const computeScore = (
     directivityScore * REFERENCES.positionsInsideArea.weight +
     averagePositionsScore * REFERENCES.positionsInsideArea.weight;
 
-  debugger;
   return score;
 };
 
