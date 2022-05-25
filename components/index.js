@@ -12,6 +12,7 @@ import {
   RadialProgressBar,
   Burger,
   ActionButton,
+  ScrollDown,
 } from "./common";
 import {
   Chrome,
@@ -51,4 +52,5 @@ export {
   Graphs,
   ActionButton,
   HeatMap,
+  ScrollDown,
 };

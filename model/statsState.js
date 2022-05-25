@@ -21,33 +21,57 @@ const computeDistance = (origin = [0, 0, 0], destination = [0, 0, 0]) => {
 };
 
 const REFERENCES = {
-  ratio: {
-    value: 100,
-    weight: 0.3,
-  },
   audioObjectsCount: {
     value: 118,
     weight: 0.2,
   },
   distance: {
     value: 10000,
-    weight: 0.5,
+    weight: 0.2,
+  },
+  averagePositions: {
+    value: 100,
+    weight: 0.2,
+  },
+  positionsInsideArea: {
+    weight: 0.4,
   },
 };
 
 const computeScore = (
-  stats = { ratio: 0, audioObjectsCount: 0, distance: 0 }
+  stats = {
+    duration,
+    distance,
+    objectCount,
+    positionCount,
+    positionInsideAreaPercent,
+    movementByMs,
+  }
 ) => {
-  const ratioScore = (100 * stats.ratio) / REFERENCES.ratio.value;
+  // 1- object count
+  // 2- distance completed
+  // 3- positions inside +/- 30°
+  // 4- positions count / programme duration
+
   const audioObjectCountScore =
-    (100 * stats.audioObjectsCount) / REFERENCES.audioObjectsCount.value;
+    (100 * stats.objectCount) / REFERENCES.audioObjectsCount.value;
+
   const distanceScore = (100 * stats.distance) / REFERENCES.distance.value;
 
-  return (
-    ratioScore * REFERENCES.ratio.weight +
+  const directivityScore = stats.positionInsideAreaPercent;
+
+  const averagePositionsScore =
+    (100 * (stats.positionCount / stats.duration)) /
+    REFERENCES.averagePositions.value;
+
+  const score =
     audioObjectCountScore * REFERENCES.audioObjectsCount.weight +
-    distanceScore * REFERENCES.distance.weight
-  );
+    distanceScore * REFERENCES.distance.weight +
+    directivityScore * REFERENCES.positionsInsideArea.weight +
+    averagePositionsScore * REFERENCES.positionsInsideArea.weight;
+
+  debugger;
+  return score;
 };
 
 const statsState = selector({
@@ -189,22 +213,22 @@ const statsState = selector({
       return accu + distance;
     }, 0);
 
-    // compute ratio object duration sum / audio programme duration
-    const audioObjectsDuration = audioContentsStats.reduce(
-      (accu, audioContentsStat) => {
-        const duration = audioContentsStat.audioObjectsStats.reduce(
-          (accu, audioContentsStat) => {
-            return accu + convertDurationToMs(audioContentsStat.duration);
-          },
-          0
-        );
-        return accu + duration;
-      },
-      0
-    );
+    // // compute ratio object duration sum / audio programme duration
+    // const audioObjectsDuration = audioContentsStats.reduce(
+    //   (accu, audioContentsStat) => {
+    //     const duration = audioContentsStat.audioObjectsStats.reduce(
+    //       (accu, audioContentsStat) => {
+    //         return accu + convertDurationToMs(audioContentsStat.duration);
+    //       },
+    //       0
+    //     );
+    //     return accu + duration;
+    //   },
+    //   0
+    // );
 
-    // audio objects duration sum / audio programme duration
-    const ratio = audioObjectsDuration / duration;
+    // // audio objects duration sum / audio programme duration
+    // const ratio = audioObjectsDuration / duration;
 
     // get audio objects count
     const audioObjectsCount = audioContentsStats.reduce(
@@ -215,18 +239,19 @@ const statsState = selector({
       0
     );
 
-    /*    // compute general score
     const score = computeScore({
+      duration: timeSpan,
       distance,
       objectCount: audioObjectsCount,
       positionCount: positions.length,
       positionInsideAreaPercent,
-    });*/
+      movementByMs: positions.length / timeSpan,
+    });
 
     //console.log(score);
 
     return {
-      score: 50,
+      score,
       details: {
         name,
         duration,

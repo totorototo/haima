@@ -3,6 +3,12 @@ import { useRecoilValue } from "recoil";
 import { statsState } from "../../../model";
 import { RadialProgressBar } from "../../common";
 
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 const Stats = ({ className, width, height }) => {
   const {
     score,
@@ -52,23 +58,23 @@ const Stats = ({ className, width, height }) => {
       <RadialProgressBar
         data={[
           {
-            label: "count",
-            percent: 50,
+            label: "object count",
+            percent: (100 * objectCount) / 218,
             color: "var(--color-primary)",
           },
           {
             label: "distance",
-            percent: 80,
+            percent: (100 * distance) / 5000,
             color: "var(--syntax-val)",
           },
           {
-            label: "volume",
-            percent: 70,
+            label: "directivity",
+            percent: 100 - positionInsideAreaPercent.toFixed(2),
             color: "var(--syntax-txt)",
           },
           {
             label: "velocity",
-            percent: 30,
+            percent: getRandomInt(40, 60),
             color: "var(--syntax-regex)",
           },
         ]}

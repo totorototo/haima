@@ -4,14 +4,25 @@ import { UploadCloud2 } from "@styled-icons/remix-line";
 import style from "./FileUploader.Style";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { admState, statsState } from "../../../model";
+import { ScrollDown } from "../../common";
 
 const SumUp = ({ className, reset }) => {
   const model = useRecoilValue(statsState);
 
   return (
-    <div className={className}>
-      {model && <div>{model.details.duration}</div>}
-      <button onClick={() => reset(false)}>reset</button>
+    <div
+      style={{
+        height: "100%",
+        flexDirection: "column",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      className={className}
+    >
+      {/* {model && <div>{model.details.duration}</div>}
+      <button onClick={() => reset(false)}>reset</button> */}
+      <ScrollDown />
     </div>
   );
 };
